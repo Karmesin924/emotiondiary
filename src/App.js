@@ -1,12 +1,12 @@
 import React, { useReducer, useRef } from "react";
 
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
+import New from "./pages/New";
 import Edit from "./pages/Edit";
 import Diary from "./pages/Diary";
-import New from "./pages/New";
 
 const reducer = (state, action) => {
   let newState = [];
@@ -24,13 +24,14 @@ const reducer = (state, action) => {
     }
     case "EDIT": {
       newState = state.map((it) =>
-        it.id === action.data.Id ? { ...action.data } : it
+        it.id === action.data.id ? { ...action.data } : it
       );
       break;
     }
     default:
       return state;
   }
+
   return newState;
 };
 
@@ -74,7 +75,7 @@ function App() {
   const [data, dispatch] = useReducer(reducer, dummyData);
 
   const dataId = useRef(0);
-  //CREATE
+  // CREATE
   const onCreate = (date, content, emotion) => {
     dispatch({
       type: "CREATE",
@@ -105,7 +106,7 @@ function App() {
   };
   return (
     <DiaryStateContext.Provider value={data}>
-      <DiaryDispatchContext.Provider value={[onCreate, onEdit, onRemove]}>
+      <DiaryDispatchContext.Provider value={{ onCreate, onEdit, onRemove }}>
         <BrowserRouter>
           <div className="App">
             <Routes>
